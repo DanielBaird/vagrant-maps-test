@@ -47,29 +47,21 @@
 	    size: '256'
 	}).addTo(testmap)
 // ----------------------------------------------------------------------
-    lion = L.tileLayer.wms("http://localhost:8888/geoserver/wallace/wms", {
-        layers: 'wallace:lion',
+    mapserverLayer = L.tileLayer.wms("http://climas-mapserver.hpc.jcu.edu.au:10600/api/raster/1/wms_data_url", {
+        DATA_URL: 'http://wallace.jcu.io/static/data/lion-dfl-p1.tif',
+        layers: 'DEFAULT',
         format: 'image/png',
-        styles: 'spp-suitability-purple',
         transparent: true
     })
-    // lion.addTo(testmap)
 // ----------------------------------------------------------------------
-    lionscaled = L.tileLayer.wms("http://localhost:8888/geoserver/wallace/wms", {
-        layers: 'wallace:lion-scaled',
+    perfLayer = L.tileLayer.wms("http://localhost:9999/geoserver/perftest/wms", {
+        layers: 'perftest:lion1',
         format: 'image/png',
         styles: 'spp-suitability-red',
         transparent: true
     })
-    // lionscaled.addTo(testmap)
 // ----------------------------------------------------------------------
-    lionnochange = L.tileLayer.wms("http://localhost:8888/geoserver/wallace/wms", {
-        layers: 'wallace:lion-scaled-nochange',
-        format: 'image/png',
-        styles: 'spp-suitability-red',
-        transparent: true
-    })
-    lionnochange.addTo(testmap)
+    perfLayer.addTo(testmap)
 // ----------------------------------------------------------------------
 // ----------------------------------------------------------------------
 </script>

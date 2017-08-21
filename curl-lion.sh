@@ -1,15 +1,15 @@
 
 
-TIFFDIR=file:///vagrant
-# REMOTE_GEOTIFF=file:///vagrant/lion-scaled-nochange.tif
-# REMOTE_GEOTIFF=file:///vagrant/lion.tif
 HOSTNAME=localhost
 PORT=8888
-WORKSPACE=wallace
-# STORE_NAME=lionDS
+
+TIFFDIR=file:///vagrant/perf-test
+# WORKSPACE=wallace
+WORKSPACE=wtest
 
 
-for TIFFFILE in lion.tif lion-scaled.tif lion-scaled-nochange.tif ; do
+#for TIFFFILE in lion.tif lion-scaled.tif lion-scaled-nochange.tif ; do
+for TIFFFILE in lion-none.tif lion-dfl-p1.tif lion-lzw-p1.tif lion-dfl-p2.tif lion-lzw-p2.tif lion-dfl-p3.tif lion-lzw-p3.tif lion.tif ; do
 
 	STORE_NAME=${TIFFFILE%%.tif}
 	

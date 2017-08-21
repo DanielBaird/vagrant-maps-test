@@ -1,0 +1,2 @@
+
+http://localhost:8888/geoserver/wallace/wms?service=WMS&request=GetMap&layers=wallace%3Alion-scaled-nochange&styles=spp-suitability-red&format=image%2Fpng&transparent=true&version=1.1.1&height=256&width=256&srs=EPSG%3A3857&bbox=0,-10018754.171394622,10018754.171394622,0
