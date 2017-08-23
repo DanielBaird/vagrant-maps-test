@@ -61,7 +61,15 @@
         transparent: true
     })
 // ----------------------------------------------------------------------
-    perfLayer.addTo(testmap)
+    testLayer = L.tileLayer.wms("http://localhost:8888/geoserver/wtest/wms", {
+        // layers: 'wtest:lion',
+        layers: 'wtest:current.threshold',
+        format: 'image/png',
+        styles: 'spp-suitability-red',
+        transparent: true
+    })
+// ----------------------------------------------------------------------
+    testLayer.addTo(testmap)
 // ----------------------------------------------------------------------
 // ----------------------------------------------------------------------
 </script>

@@ -8,7 +8,10 @@ $shell_provision = <<-SHELL
 	yum install tomcat tomcat-webapps tomcat-admin-webapps -y
 
 	# get geoserver and add it to tomcat
-	wget --quiet https://downloads.sourceforge.net/project/geoserver/GeoServer/2.11.2/geoserver-2.11.2-war.zip
+	echo "getting geoserver installer..."
+	# wget --quiet https://downloads.sourceforge.net/project/geoserver/GeoServer/2.11.2/geoserver-2.11.2-war.zip
+	cp /vagrant/deploy/downloads/geoserver-2.11.2-war.zip .
+
 	yum install unzip -y
 	unzip geoserver-2.11.2-war.zip geoserver.war -d /var/lib/tomcat/webapps
 
@@ -44,9 +47,21 @@ Vagrant.configure("2") do |config|
 		config.vm.network "forwarded_port", guest: 8080, host: 9999
 
 		config.vm.provision "shell", inline: <<-PERF
-			/vagrant/perf-test/add-lions.sh
+			/vagrant/perf-test/add-lions.sh 10000
 		PERF
+	end
+	# ---------------------------------------------
+	config.vm.define "perfdb" do |perf|
+		config.vm.network "forwarded_port", guest: 8080, host: 7777
 
+		config.vm.provision "shell", inline: <<-PERF
+			sudo bash /vagrant/deploy/install-jdbcconfig.sh
+			echo "giving plugin 30 seconds to do its job..."
+			sleep 20
+			echo "10 seconds left..."
+			sleep 10
+			/vagrant/perf-test/add-lions.sh 100
+		PERF
 	end
 	# ---------------------------------------------
 end

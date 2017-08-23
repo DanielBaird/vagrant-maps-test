@@ -7,11 +7,11 @@
       <FeatureTypeStyle>
         <Rule>
           <RasterSymbolizer>
-            <Opacity>0.6</Opacity>
+            <Opacity>1</Opacity>
             <ColorMap>
-              <ColorMapEntry color="#ffffff" opacity="0" quantity="-1"/>
-              <ColorMapEntry color="#ffffff" opacity="1" quantity="0.0"/>
-              <ColorMapEntry color="#ff0000" opacity="1" quantity="1.0"/>
+              <ColorMapEntry color="#ffffff" opacity="0" quantity="0.0"/>
+              <ColorMapEntry color="#ff0000" opacity="1" quantity="0.00000001"/>
+              <ColorMapEntry color="#00ff00" opacity="1" quantity="1.0"/>
               </ColorMap>
             </RasterSymbolizer>
           </Rule>
