@@ -23,7 +23,7 @@ mkdir --parents $TIFFDIR
 for ((i=1; i<=$1; i++ )) ; do
 	ln -s "$SOURCE/lion.tif" "$TIFFDIR/lion$i.tif"
 
-	curl -s -w "\ngot %{http_code} for lion$i.tif" -o /dev/null \
+	curl -s -w "got %{http_code} for lion$i.tif" -o /dev/null \
 		-u "admin:geoserver" \
 		-XPUT \
 		-H 'Content-type: image/tiff' \

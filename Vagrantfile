@@ -22,8 +22,8 @@ $shell_provision = <<-SHELL
 	# start tomcat after every reboot
 	systemctl enable tomcat
 
-	echo "giving tomcat and geoserver ten seconds to start up.."
-	sleep 10
+	echo "giving tomcat and geoserver twenty seconds to start up.."
+	sleep 20
 	pushd /vagrant && ./upload-styles.sh && popd
 
 SHELL
@@ -56,11 +56,11 @@ Vagrant.configure("2") do |config|
 
 		config.vm.provision "shell", inline: <<-PERF
 			sudo bash /vagrant/deploy/install-jdbcconfig.sh
-			echo "giving plugin 30 seconds to do its job..."
-			sleep 20
+			echo "only a few layers in this situation, so giving plugin 90 seconds to do its job..."
+			sleep 80
 			echo "10 seconds left..."
 			sleep 10
-			/vagrant/perf-test/add-lions.sh 100
+			/vagrant/perf-test/add-lions.sh 100000
 		PERF
 	end
 	# ---------------------------------------------

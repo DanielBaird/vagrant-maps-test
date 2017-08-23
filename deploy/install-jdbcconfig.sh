@@ -22,19 +22,21 @@ unzip geoserver-2.11-SNAPSHOT-jdbcconfig-plugin.zip *.jar -d /var/lib/tomcat/web
 # (by default the data dir is at /usr/share/tomcat/webapps/geoserver/data )
 tomcat stop
 tomcat start
-echo "started tomcat, waiting 10 seconds for dir to be created"
-sleep 10
-
+echo "started tomcat, waiting 30 seconds for dir to be created"
+sleep 30
 
 # stop geoserver
 tomcat stop
 
 # copy in the config
+echo "copying in JDBCConfig config file..."
 rm -f /usr/share/tomcat/webapps/geoserver/data/jdbcconfig/jdbcconfig.properties
 cp /vagrant/deploy/config/jdbcconfig.properties /usr/share/tomcat/webapps/geoserver/data/jdbcconfig/
 
 # make the db
+echo "creating db..."
 sudo -u postgres createdb gscatalog
+echo "initialising db..."
 sudo -u postgres psql -d gscatalog < /usr/share/tomcat/webapps/geoserver/data/jdbcconfig/scripts/initdb.postgres.sql
 
 # restart geoserver

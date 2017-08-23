@@ -1,14 +1,10 @@
 
-echo "this should be run from inside the VM."
-
 HOSTNAME=localhost
-PORT=8080
 
 USER=admin
 PASS=geoserver
 
 STYLESDIR=./styles
-
 
 for PORT in 8080 7777 8888 9999 ; do
 	for STYLEFILE in $STYLESDIR/*.sld ; do
