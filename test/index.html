@@ -18,8 +18,21 @@
 
     <style type="text/css">
     #map {
-        height: 600px;
+        height: 700px;
     }
+    .buttonbar {
+    	padding: 1em;
+    	text-align: center;
+    }
+    .buttonbar button {
+    	padding: 0.5em 1em;
+    	margin: 0.5em;
+    }
+    .buttonbar button.showing {
+    	box-shadow: 0 2px 8px 2px #0066cc;
+    }
+    .buttonbar button::before {
+    	content: attr(data-layer);
     </style>
 
 </head>
@@ -29,47 +42,103 @@
 	<div id="map">
 	</div>
 
+	<div class="buttonbar">
+	</div>
+
 <script type="text/javascript">
 // ----------------------------------------------------------------------
 // ----------------------------------------------------------------------
 	var testmap = L.map('map', {
     	center: [-10, 20],
-    	zoom: 4
+    	zoom: 3
 	});
+	var testLayer = L.tileLayer();
 // ----------------------------------------------------------------------
-	L.tileLayer('http://{s}.{base}.maps.cit.api.here.com/maptile/2.1/{type}/{mapID}/{scheme}/{z}/{x}/{y}/{size}/{format}?app_id={app_id}&app_code={app_code}&lg={language}', {
+
+	// L.tileLayer('http://{s}.{base}.maps.cit.api.here.com/maptile/2.1/{type}/{mapID}/{scheme}/{z}/{x}/{y}/{size}/{format}?app_id={app_id}&app_code={app_code}&lg={language}', {
+
+	L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/{variant}/MapServer/tile/{z}/{y}/{x}', {
 	    attribution: 'Map &copy; 2016 <a href="http://developer.here.com">HERE</a>',
 	    subdomains: '1234',                base: 'aerial',
 	    type: 'maptile',                   scheme: 'terrain.day',
 	    app_id: 'l2Rye6zwq3u2cHZpVIPO',    app_code: 'MpXSlNLcLSQIpdU6XHB0TQ',
 	    mapID: 'newest',                   maxZoom: 18,
 	    language: 'eng',                   format: 'png8',
-	    size: '256'
+	    size: '256',
+        variant: 'World_Topo_Map'
 	}).addTo(testmap)
 // ----------------------------------------------------------------------
-    mapserverLayer = L.tileLayer.wms("http://climas-mapserver.hpc.jcu.edu.au:10600/api/raster/1/wms_data_url", {
-        DATA_URL: 'http://wallace.jcu.io/static/data/lion-dfl-p1.tif',
-        layers: 'DEFAULT',
-        format: 'image/png',
-        transparent: true
-    })
+	function layer(layerName, style) {
+	    testLayer.remove()
+	    testLayer = L.tileLayer.wms("http://wallace-maps.hpc.jcu.edu.au/geoserver/wallace/wms", {
+	        layers: layerName, format: 'image/png', styles: style, transparent: true
+	    })
+	    testLayer.addTo(testmap)
+	}
 // ----------------------------------------------------------------------
-    perfLayer = L.tileLayer.wms("http://localhost:9999/geoserver/perftest/wms", {
-        layers: 'perftest:lion1',
-        format: 'image/png',
-        styles: 'spp-suitability-red',
-        transparent: true
-    })
+	[
+		['species Lepidopilum affine',   'spp-suitability-purple',   'wallace:species@Lepidopilum_affine@current'],
+
+		['richness current birds',   'taxa-richness',         'wallace:aves-richness-current'],
+		['rich 2.7disp birds',   'taxa-richness-change',  'wallace:richness-aves-change-disp'],
+		['rich 2.7nodisp birds', 'taxa-richness-change',  'wallace:richness.aves.nodisp'],
+
+		['rich current carnivora',  'taxa-richness',         'wallace:carnivora-rich-current'],
+		['rich 2.7disp carnivora',  'taxa-richness-change',  'wallace:rich-carnivora-change-disp'],
+		['rich 2.7nodisp carnivora',   'taxa-richness-change',  'wallace:carnivora-rich-nodisp'],
+
+		['AoC carnivora',  'taxa-aoc',  'wallace:aoc-carnivora-nodisp'],
+		['AoC birds',  'taxa-aoc',  'wallace:aoc-aves-nodisp'],
+
+		['Refugia carnivora',  'taxa-refugia',  'wallace:refuge-carnivora-nodisp'],
+		['Refugia birds',  'taxa-refugia',  'wallace:ref-aves-nodisp'],
+
+	].forEach(function(item, i) {
+		var btn = document.createElement('button')
+		btn.setAttribute('data-layer', item[0])
+		btn.addEventListener('click', function() {
+			var showbtns = document.querySelectorAll('.showing')
+			if (showbtns.length > 0) {
+				showbtns[0].setAttribute('class', '')
+			}
+			layer(item[2], item[1])
+			this.className = 'showing'
+		})
+		document.querySelectorAll('.buttonbar')[0].appendChild(btn)
+	})
 // ----------------------------------------------------------------------
-    testLayer = L.tileLayer.wms("http://localhost:8888/geoserver/wtest/wms", {
-        // layers: 'wtest:lion',
-        layers: 'wtest:current.threshold',
-        format: 'image/png',
-        styles: 'spp-suitability-red',
-        transparent: true
-    })
 // ----------------------------------------------------------------------
-    testLayer.addTo(testmap)
+// ----------------------------------------------------------------------
+//     mapserverLayer = L.tileLayer.wms("http://climas-mapserver.hpc.jcu.edu.au:10600/api/raster/1/wms_data_url", {
+//         DATA_URL: 'http://wallace.jcu.io/static/data/lion-dfl-p1.tif',
+//         layers: 'DEFAULT',
+//         format: 'image/png',
+//         transparent: true
+//     })
+// // ----------------------------------------------------------------------
+//     perfLayer = L.tileLayer.wms("http://localhost:9999/geoserver/perftest/wms", {
+//         layers: 'perftest:lion1',
+//         format: 'image/png',
+//         styles: 'spp-suitability-red',
+//         transparent: true
+//     })
+// // ----------------------------------------------------------------------
+//     localTestLayer = L.tileLayer.wms("http://localhost:8888/geoserver/wtest/wms", {
+//         // layers: 'wtest:lion',
+//         layers: 'wtest:current.threshold',
+//         format: 'image/png',
+//         styles: 'spp-suitability-red',
+//         transparent: true
+//     })
+// // ----------------------------------------------------------------------
+//     testLayer = L.tileLayer.wms("http://wallace-maps.hpc.jcu.edu.au/geoserver/wallace/wms", {
+//         layers: 'wallace:species:TEMP_2_10.no.disp',
+//         format: 'image/png',
+//         styles: 'spp-suitability-red',
+//         transparent: true
+//     })
+// ----------------------------------------------------------------------
+    // testLayer.addTo(testmap)
 // ----------------------------------------------------------------------
 // ----------------------------------------------------------------------
 </script>
