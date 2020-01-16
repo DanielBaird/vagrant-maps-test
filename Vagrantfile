@@ -43,6 +43,14 @@ Vagrant.configure("2") do |config|
 		config.vm.network "forwarded_port", guest: 8080, host: 8888
 	end
 	# ---------------------------------------------
+	config.vm.define "postgis" do |perf|
+		config.vm.network "forwarded_port", guest: 8080, host: 9999
+
+		config.vm.provision "shell", inline: <<-PROVISIONEND
+			yum install postgis -y
+		PROVISIONEND
+	end
+	# ---------------------------------------------
 	config.vm.define "perf" do |perf|
 		config.vm.network "forwarded_port", guest: 8080, host: 9999
 

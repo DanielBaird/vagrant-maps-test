@@ -1,12 +1,13 @@
 
 HOSTNAME=localhost
+HOSTNAME=wallace-maps.hpc.jcu.edu.au
 
 USER=admin
 PASS=geoserver
 
 STYLESDIR=./styles
 
-for PORT in 8080 7777 8888 9999 ; do
+for PORT in 80 8080 7777 8888 9999 ; do
 	for STYLEFILE in $STYLESDIR/*.sld ; do
 
 		STYLENAME=${STYLEFILE%%.sld}
